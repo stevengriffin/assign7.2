@@ -1,0 +1,70 @@
+Steven Griffin sgriff27@jhu.edu
+
+Part 1: Extants
+
+sysfile.c
+
+This file contains implementations of fs-related system calls. These
+functions mostly grab arguments from the saved user stack,
+do error handling, and call the relevant functions in file.c and
+fs.c.
+
+User file descriptor ints are used to look up file structs in the
+currently executing process's array of pointers to file structs.
+
+file.c
+
+These functions take the file struct pointer we found in sysfile.c
+and/or the global ftable file array and implement the actual functionality 
+of the syscalls by calling the next layer of abstraction, inodes in fs.c.
+
+They also handle reference counting for file structs so that files are
+only closed when no processes are using them anymore.
+
+fs.c
+
+Inodes provide information about files and an abstraction over raw
+buffers.
+
+Inodes being used are cached in RAM and reference counted. iget finds a
+cached inode given its inum by looping through the icache's array of
+inodes and checking their inum or recycles a cached inode with no
+references to it. iput drops a ref to a cached inode and idup increases its
+ref count. ialloc makes a new on-disk inode (dinode) and returns the
+relevant cached inode. iupdate copies an inode into the relevant dinode.
+ilock and iunlock make sure inodes are not modified concurrently.
+
+readi and writei interact with the buffer layer to move data from a
+buffer's data char* into a destination char* and vice versa. They also
+call bmap, which maps local inode block numbers to absolute disk block
+addresses. Disk location info is stored in the inode's addrs array. If the
+file needs more than NDIRECT disk blocks, the rest are stored in a disk
+block at address addrs[NDIRECT].
+
+String path lookups eventually call namex, which looks up the relevant
+inode. Paths like "abc" start at the current working directory inode;
+paths like "/abc" start at the root directory inode. Then we loop,
+following the path down one element (directory/file name) at a time with
+skipelem and dirlookup until we get to the file itself.
+
+bio.c
+
+This file handles the buffer layer. These are cached in memory
+in an array-backed linked list to improve performance. buf structs contain
+the actual data in the disk sector in an array of uchars, as well as
+flags, the disk/device they belong to, and their sector number.
+
+bread gets a cached buf by calling bget or reads it from the disk if
+it isn't cached. bwrite writes a buf to disk. brelse releases a buffer
+from the cache.
+
+log.c
+
+This file fixes inconsistencies and bugs that can occur due to crashes
+and concurrent writes by implementing transactions.
+
+Part 2 Plan:
+
+Expand the stat struct in stat.h to contain information about disk
+location. Modify stati in fs.c accordingly. Make a new function like
+bmap, but which only allocates if told to.
