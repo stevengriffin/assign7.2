@@ -1674,6 +1674,7 @@ def	sh.asm	/^     def:	75 05                	jne    df6 <strchr+0x1e>$/;"	l
 default	kernel.asm	/^    default:$/;"	l
 default	kernel.asm	/^  default:$/;"	l
 default	sh.asm	/^  default:$/;"	l
+det_and_print_type	stat.c	/^void det_and_print_type(short type) {$/;"	f
 dev	buf.h	/^  uint dev;$/;"	m	struct:buf
 dev	file.h	/^  uint dev;           \/\/ Device number$/;"	m	struct:inode
 dev	log.c	/^  int dev;$/;"	m	struct:log	file:
@@ -2630,6 +2631,7 @@ main	mkdir.c	/^main(int argc, char *argv[])$/;"	f
 main	mkfs.c	/^main(int argc, char *argv[])$/;"	f
 main	rm.c	/^main(int argc, char *argv[])$/;"	f
 main	sh.c	/^main(void)$/;"	f
+main	stat.c	/^int main(int argc, char *args[]) {$/;"	f
 main	stressfs.c	/^main(int argc, char *argv[])$/;"	f
 main	usertests.c	/^main(int argc, char *argv[])$/;"	f
 main	wc.c	/^main(int argc, char *argv[])$/;"	f
@@ -2948,6 +2950,7 @@ ppid	usertests.asm	/^    ppid = getpid();$/;"	d
 ppid	usertests.asm	/^  ppid = getpid();$/;"	d
 preempt	usertests.c	/^preempt(void)$/;"	f
 prev	buf.h	/^  struct buf *prev; \/\/ LRU cache list$/;"	m	struct:buf	typeref:struct:buf::buf
+print_type	stat.c	/^void print_type(char* type_str) {$/;"	f
 printf	forktest.c	/^printf(int fd, char *s, ...)$/;"	f
 printf	printf.c	/^printf(int fd, char *fmt, ...)$/;"	f
 printint	console.c	/^printint(int xx, int base, int sign)$/;"	f	file:
@@ -3288,6 +3291,7 @@ static	zombie.asm	/^static Header*$/;"	l
 static	zombie.asm	/^static inline void$/;"	l
 static	zombie.asm	/^static void$/;"	l
 static_assert	mkfs.c	14;"	d	file:
+status	stat.c	/^struct stat status;$/;"	v	typeref:struct:stat
 stdout	usertests.c	/^int stdout = 1;$/;"	v
 sti	x86.h	/^sti(void)$/;"	f
 stosb	x86.h	/^stosb(void *addr, int data, int cnt)$/;"	f
