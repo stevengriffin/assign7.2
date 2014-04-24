@@ -68,3 +68,14 @@ Part 2 Plan:
 Expand the stat struct in stat.h to contain information about disk
 location. Modify stati in fs.c accordingly. Make a new function like
 bmap, but which only allocates if told to.
+
+Part 2 Differences:
+
+None so far.
+
+Part 2 Changes:
+
+bmap_alloc created in fs.c that takes a parameter whether to allocate when
+mapping. stat struct has array of addresses in stat.h. stat.c prints info
+about a file/directory/device. Makefile changed to build stat.c. stati in
+fs.c changed to handle addresses.
