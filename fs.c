@@ -398,6 +398,16 @@ static uint bmap(struct inode *ip, uint bn) {
     return bmap_alloc(ip, bn, 1);
 }
 
+static void assemble_addrs(struct stat *st, struct inode *ip) {
+    uint curr_addr = 0;
+    uint curr_block = 0;
+    while (curr_addr != -1) {
+        curr_addr = bmap_alloc(ip, curr_block, 0);
+        st->addrs[curr_block] = curr_addr;
+        curr_block++;
+    }
+}
+
 // Truncate inode (discard contents).
 // Only called when the inode has no links
 // to it (no directory entries referring to it)
@@ -442,6 +452,7 @@ stati(struct inode *ip, struct stat *st)
   st->type = ip->type;
   st->nlink = ip->nlink;
   st->size = ip->size;
+  assemble_addrs(st, ip);
 }
 
 //PAGEBREAK!

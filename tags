@@ -17,6 +17,7 @@ BIG	usertests.asm	/^#define BIG (100*1024*1024)$/;"	d
 BIG	usertests.c	1354;"	d	file:
 BPB	fs.h	43;"	d
 BSIZE	fs.h	12;"	d
+BSIZE	stat.h	1;"	d
 BUSY	lapic.c	27;"	d	file:
 B_BUSY	buf.h	10;"	d
 B_DIRTY	buf.h	12;"	d
@@ -170,6 +171,7 @@ MASKED	lapic.c	37;"	d	file:
 MAXARG	param.h	10;"	d
 MAXARGS	sh.c	14;"	d	file:
 MAXFILE	fs.h	24;"	d
+MAXFILE	stat.h	5;"	d
 MEMFSOBJS	Makefile	/^MEMFSOBJS = $(filter-out ide.o,$(OBJS)) memide.o$/;"	m
 MPBOOT	mp.h	34;"	d
 MPBUS	mp.h	50;"	d
@@ -183,9 +185,11 @@ NBUF	param.h	6;"	d
 NCPU	param.h	3;"	d
 NDEV	param.h	8;"	d
 NDIRECT	fs.h	22;"	d
+NDIRECT	stat.h	3;"	d
 NELEM	defs.h	181;"	d
 NFILE	param.h	5;"	d
 NINDIRECT	fs.h	23;"	d
+NINDIRECT	stat.h	4;"	d
 NINODE	param.h	7;"	d
 NO	kbd.h	7;"	d
 NOFILE	param.h	4;"	d
@@ -323,11 +327,11 @@ T_BRKPT	traps.h	7;"	d
 T_DBLFLT	traps.h	12;"	d
 T_DEBUG	traps.h	5;"	d
 T_DEFAULT	traps.h	28;"	d
-T_DEV	stat.h	3;"	d
+T_DEV	stat.h	9;"	d
 T_DEVICE	traps.h	11;"	d
-T_DIR	stat.h	1;"	d
+T_DIR	stat.h	7;"	d
 T_DIVIDE	traps.h	4;"	d
-T_FILE	stat.h	2;"	d
+T_FILE	stat.h	8;"	d
 T_FPERR	traps.h	20;"	d
 T_GPFLT	traps.h	17;"	d
 T_ILLOP	traps.h	10;"	d
@@ -716,6 +720,7 @@ addr	kernel.asm	/^  addr = proc->sz;$/;"	d
 addr	mp.h	/^  uint *addr;                  \/\/ I\/O APIC address$/;"	m	struct:mpioapic
 addrs	file.h	/^  uint addrs[NDIRECT+1];$/;"	m	struct:inode
 addrs	fs.h	/^  uint addrs[NDIRECT+1];   \/\/ Data block addresses$/;"	m	struct:dinode
+addrs	stat.h	/^  uint addrs[MAXFILE];$/;"	m	struct:stat
 adf	grep.asm	/^ adf:	e8 ed fe ff ff       	call   9d1 <morecore>$/;"	l
 adf	ls.asm	/^ adf:	8b 45 ec             	mov    -0x14(%ebp),%eax$/;"	l
 adf	sh.asm	/^     adf:	00 $/;"	l
@@ -798,6 +803,7 @@ argstr	syscall.c	/^argstr(int n, char **pp)$/;"	f
 argv	init.c	/^char *argv[] = { "sh", 0 };$/;"	v
 argv	initcode.S	/^argv:$/;"	l
 argv	sh.c	/^  char *argv[MAXARGS];$/;"	m	struct:execcmd	file:
+assemble_addrs	fs.c	/^static void assemble_addrs(struct stat *st, struct inode *ip) {$/;"	f	file:
 atoi	ulib.c	/^atoi(const char *s)$/;"	f
 avl	mmu.h	/^  uint avl : 1;        \/\/ Unused (available for software use)$/;"	m	struct:segdesc
 b	cat.asm	/^   b:	89 44 24 08          	mov    %eax,0x8(%esp)$/;"	l
@@ -1055,7 +1061,8 @@ bigfile	usertests.c	/^bigfile(void)$/;"	f
 bigwrite	usertests.c	/^bigwrite(void)$/;"	f
 binit	bio.c	/^binit(void)$/;"	f
 bitblocks	mkfs.c	/^uint bitblocks;$/;"	v
-bmap	fs.c	/^bmap(struct inode *ip, uint bn)$/;"	f	file:
+bmap	fs.c	/^static uint bmap(struct inode *ip, uint bn) {$/;"	f	file:
+bmap_alloc	fs.c	/^static uint bmap_alloc(struct inode *ip, uint bn, uint should_alloc) {$/;"	f	file:
 bootmain	bootmain.c	/^bootmain(void)$/;"	f
 bp	cat.asm	/^  bp = (Header*)ap - 1;$/;"	d
 bp	echo.asm	/^  bp = (Header*)ap - 1;$/;"	d
@@ -2950,6 +2957,7 @@ ppid	usertests.asm	/^    ppid = getpid();$/;"	d
 ppid	usertests.asm	/^  ppid = getpid();$/;"	d
 preempt	usertests.c	/^preempt(void)$/;"	f
 prev	buf.h	/^  struct buf *prev; \/\/ LRU cache list$/;"	m	struct:buf	typeref:struct:buf::buf
+print_addrs	stat.c	/^void print_addrs() {$/;"	f
 print_type	stat.c	/^void print_type(char* type_str) {$/;"	f
 printf	forktest.c	/^printf(int fd, char *s, ...)$/;"	f
 printf	printf.c	/^printf(int fd, char *fmt, ...)$/;"	f

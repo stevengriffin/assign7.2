@@ -37,6 +37,17 @@ void det_and_print_type(short type) {
     }
 }
 
+void print_addrs() {
+    printf(1, "FILE DISK BLOCK ADDRESSES:\n");
+    uint i;
+    for (i = 0; i < MAXFILE; i++) {
+        if (status.addrs[i] == -1) {
+            return;
+        }
+        printf(1, "%d: %d\n", i, status.addrs[i]);
+    }
+}
+
 int main(int argc, char *args[]) {
     int i;
 
@@ -46,9 +57,13 @@ int main(int argc, char *args[]) {
     }
     for(i=1; i<argc; i++) {
         stat(args[i], &status);
-        printf(1, "FILE %s\n", args[i]);
+        printf(1, "NAME: %s\n", args[i]);
         det_and_print_type(status.type);
+        printf(1, "DEV: %d\n", status.dev);
+        printf(1, "INODE NUM: %d\n", status.ino);
+        printf(1, "NUM LINKS: %d\n", status.nlink);
+        printf(1, "SIZE IN BYTES: %d\n", status.size);
+        print_addrs();
     }
     exit();
 }
-
